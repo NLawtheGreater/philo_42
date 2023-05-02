@@ -1,5 +1,17 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   philo.h                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: niclaw <marvin@42.fr>                      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/05/02 18:53:39 by niclaw            #+#    #+#             */
+/*   Updated: 2023/05/02 18:53:41 by niclaw           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef PHILO_H
-# define PHILO_H
+#define PHILO_H
 
 #include <pthread.h>
 #include <sys/time.h>
@@ -39,18 +51,17 @@ typedef struct s_phil
 	int				*end;
 }					t_phil;
 
-
 void	run_philo_one(t_arg arg);
-void 	create_phil (t_phil *phil, t_arg arg);
-void 	*routine(void *arg);
+void	create_phil(t_phil *phil, t_arg arg);
+void	*routine(void *arg);
 void	ph_fork(t_phil *phil);
-void 	eat(t_phil *phil);
-void 	ph_sleep(t_phil *phil);
-void 	think(t_phil *phil);
-void 	*manager(void *arg);
-int 	die(t_phil *phil);
+void	eat(t_phil *phil);
+void	ph_sleep(t_phil *phil);
+void	think(t_phil *phil);
+void	*manager(void *arg);
+int		die(t_phil *phil);
 long	time_stamp(t_phil *phil);
-void 	wait_phil (t_phil *phil);
+void	wait_phil(t_phil *phil);
 int		ft_atoi(char *str);
 
 #endif

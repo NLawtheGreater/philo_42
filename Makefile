@@ -66,7 +66,8 @@ ARG  =  5 800 200 200 7
 # the compilation flag that will we will use for the project
 
 CC	= gcc
-CFLAGS	= -g -Wall -Wextra -Wextra $(PTHR) #-fsanitize=address
+CFLAGS	=   -g -Wall -Wextra -Wextra $(PTHR) 
+#-fsanitize=address
 RM	= rm -f
 
 ### COLORS ###

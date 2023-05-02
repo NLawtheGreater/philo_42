@@ -14,7 +14,6 @@
 
 void	ph_fork(t_phil *phil)
 {
-
 	if (*(phil->end) == phil->arg.number_of_philosophers)
 		return ;
 	if (pthread_mutex_lock(&phil->fork) != 0)
