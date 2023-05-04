@@ -80,57 +80,36 @@ void	create_phil(t_phil *phil, t_arg arg)
 	return ;
 }
 
+static void	clear(t_phil *phil)
+{
+	pthread_mutex_unlock(&phil->fork);
+	pthread_mutex_unlock(&phil->r_phil->fork);
+	pthread_mutex_destroy(&(phil->fork));
+	return ;
+}
+
 void	*routine(void *arg)
 {
 	t_phil	*phil;
 
 	phil = (t_phil *) arg;
-	if (!((phil->id) % 2))
+	if (!(phil->id % 2))
 		usleep(600);
 	while (*(phil->end) != phil->arg.number_of_philosophers)
 	{
 		if (*(phil->end) == phil->arg.number_of_philosophers)
 			break ;
-		else
-			ph_fork (phil);
+		ph_fork (phil);
 		if (*(phil->end) == phil->arg.number_of_philosophers)
 			break ;
-		else
-			eat (phil);
+		eat (phil);
 		if (*(phil->end) == phil->arg.number_of_philosophers)
 			break ;
-		else
-			ph_sleep (phil);
+		ph_sleep (phil);
 		if (*(phil->end) == phil->arg.number_of_philosophers)
 			break ;
-		else
-			think (phil);
+		think (phil);
 	}
-	pthread_mutex_unlock(&phil->fork);
-	pthread_mutex_unlock(&phil->r_phil->fork);
-	pthread_mutex_destroy(&(phil->fork));
+	clear (phil);
 	return (NULL);
-}
-/*void *time(void *arg)
-{
-	t_phil
-	phil ()
-	struct timeval s_st;
-	gettimeofday(&s_st, 0);
-	eat()
-}
-*/
-
-void	wait_phil(t_phil *phil)
-{
-	int	i;
-
-	i = 0;
-	while (i < phil->arg.number_of_philosophers)
-	{
-		pthread_join((phil + i)->ph, NULL);
-		i++;
-	}
-	pthread_join(phil->man, NULL);
-	return ;
 }

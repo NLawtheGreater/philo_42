@@ -48,3 +48,17 @@ int	ft_atoi(char *str)
 {
 	return (rec_atoi(str, 0));
 }
+
+void	wait_phil(t_phil *phil)
+{
+	int	i;
+
+	i = 0;
+	while (i < phil->arg.number_of_philosophers)
+	{
+		pthread_join((phil + i)->ph, NULL);
+		i++;
+	}
+	pthread_join(phil->man, NULL);
+	return ;
+}

@@ -11,13 +11,13 @@
 /* ************************************************************************** */
 
 #ifndef PHILO_H
-#define PHILO_H
+# define PHILO_H
 
-#include <pthread.h>
-#include <sys/time.h>
-#include <unistd.h>
-#include <stdio.h>
-#include <stdlib.h>
+# include <pthread.h>
+# include <sys/time.h>
+# include <unistd.h>
+# include <stdio.h>
+# include <stdlib.h>
 
 typedef struct s_arg
 {
@@ -29,12 +29,6 @@ typedef struct s_arg
 	struct timeval	s_st;
 	pthread_mutex_t	mutex;
 }					t_arg;
-
-/*typedef struct s_time
-{
-	long	sec;
-	long	usec;
-}			t_time; */
 
 typedef struct s_phil
 {
