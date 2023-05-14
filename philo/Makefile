@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: niclaw <niclaw@student.42.fr>              +#+  +:+       +#+         #
+#    By: niclaw <nicklaw@gmail.com>                 +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/09/24 13:59:17 by niclaw            #+#    #+#              #
-#    Updated: 2023/05/02 15:54:23 by niclaw           ###   ########.fr        #
+#    Updated: 2023/05/14 16:18:11 by niclaw           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,9 +18,9 @@ NAME	= philo
 ### DIR ###
 # all the dir to neatly keep your .c and .h
 
-SRC_DIR		= srcs/
+SRC_DIR		= 
 BONUS_DIR	= bonus/
-HEAD		= include/
+HEAD		= 
 SHARE_DIR	= share/
 BUILD_DIR =	./build/
 
@@ -67,7 +67,7 @@ ARG  =  5 800 200 200 7
 
 CC	= gcc
 CFLAGS	=   -g -Wall -Wextra -Wextra $(PTHR) 
-#-fsanitize=address
+-fsanitize=address
 RM	= rm -f
 
 ### COLORS ###
@@ -86,7 +86,7 @@ MSG = "Upload to git"
 
 ### RULES ###
 ${NAME}:	${OBJS} ${SHARE_OBJS} ${LIB_DIR}
-	${CC} ${CFLAGS} -I $(HEAD) ${OBJS} ${SHARE_OBJS}\
+	${CC} ${CFLAGS} ${OBJS} ${SHARE_OBJS}\
 	-o ${NAME}
 	@echo "$(GREEN) $@ Linking done!$(NOC)"
 
@@ -94,7 +94,7 @@ $(BUILD_DIR)%.o:	%.c
 	@mkdir -p $(BUILD_DIR)${SRC_DIR}
 	@mkdir -p $(BUILD_DIR)${SHARE_DIR}
 	@mkdir -p $(BUILD_DIR)${BONUS_DIR}
-	${CC} ${CFLAGS} -I $(HEAD) -c $< -o $(BUILD_DIR)${<:.c=.o}
+	${CC} ${CFLAGS} -c $< -o $(BUILD_DIR)${<:.c=.o}
 	
 #build: 
 #	@mkdir -p ${addprefix ${BUILD}, ${SRC_DIR}}
@@ -122,14 +122,13 @@ fclean:	clean
 
 re:	fclean all
 
-test2:
 
 mem:	
 #leaks --atExit -- ./$(NAME) $(MAP)
 # valgrind  --leak-check=summary  --show-leak-kinds=all ./$(NAME) $(ARG)
 	valgrind --tool=drd --first-race-only=yes ./$(NAME) $(ARG)
 
-tester:
+#tester:
 
 norm:
 	norminette
@@ -158,7 +157,7 @@ help:
 
 object:
 	@echo $(OBJS)
-.PHONY:	all clean fclean re bonus test t1 t2 mem tester norm name build
+.PHONY:	all clean fclean re bonus mem norm name build
 
 # this will add the file dependencies below, i.e. it modifies this file
 depend:
