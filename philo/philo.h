@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: niclaw <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: niclaw <nicklaw@gmail.com>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 18:53:39 by niclaw            #+#    #+#             */
-/*   Updated: 2023/05/02 18:53:41 by niclaw           ###   ########.fr       */
+/*   Updated: 2023/05/15 22:22:03 by niclaw           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,5 +57,8 @@ int		die(t_phil *phil);
 long	time_stamp(t_phil *phil);
 void	wait_phil(t_phil *phil);
 int		ft_atoi(char *str);
+void	create_phil_man(t_phil *phil);
+int		philo_check(int arg_num, char **arg);
+t_arg	philo_set(int argc, char **argv);
 
 #endif

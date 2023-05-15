@@ -6,7 +6,7 @@
 #    By: niclaw <nicklaw@gmail.com>                 +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/09/24 13:59:17 by niclaw            #+#    #+#              #
-#    Updated: 2023/05/14 16:18:11 by niclaw           ###   ########.fr        #
+#    Updated: 2023/05/15 22:25:34 by niclaw           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,7 +36,7 @@ TESTER4		=
 # the name of your .c go here. SRC is for mandatory, BONUS is for the bonus. 
 # SHARE is for .c file that your mandatory and bonus use. LIBFT is where your specific libft .c file go.
 
-SRC	=	main.c phil_action.c phil_manage.c phil_util.c
+SRC	=	main.c phil_action.c phil_manage.c phil_util.c phil_util2.c
 
 BONUS	=	
 
@@ -66,8 +66,7 @@ ARG  =  5 800 200 200 7
 # the compilation flag that will we will use for the project
 
 CC	= gcc
-CFLAGS	=   -g -Wall -Wextra -Wextra $(PTHR) 
--fsanitize=address
+CFLAGS	=   -g -Wall -Wextra -Wextra $(PTHR) -fsanitize=address
 RM	= rm -f
 
 ### COLORS ###
