@@ -6,7 +6,7 @@
 #    By: niclaw <nicklaw@gmail.com>                 +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/09/24 13:59:17 by niclaw            #+#    #+#              #
-#    Updated: 2023/05/15 22:25:34 by niclaw           ###   ########.fr        #
+#    Updated: 2023/05/16 16:07:25 by niclaw           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -61,12 +61,13 @@ PRINT	= ${PRINT_DIR}libftprintf.a
 ### Philosopher ###
 # Extra specific for philosopher project
 PTHR = -pthread
-ARG  =  5 800 200 200 7
+ARG  =  4 90 60 60
 ### COMPILATION ###
 # the compilation flag that will we will use for the project
 
 CC	= gcc
-CFLAGS	=   -g -Wall -Wextra -Wextra $(PTHR) -fsanitize=address
+CFLAGS	=   -g -Wall -Wextra -Wextra $(PTHR) 
+#-fsanitize=leak  ASAN_OPTIONS=detect_leaks=1
 RM	= rm -f
 
 ### COLORS ###
@@ -123,9 +124,9 @@ re:	fclean all
 
 
 mem:	
-#leaks --atExit -- ./$(NAME) $(MAP)
+	leaks --atExit -- ./$(NAME) $(ARG)
 # valgrind  --leak-check=summary  --show-leak-kinds=all ./$(NAME) $(ARG)
-	valgrind --tool=drd --first-race-only=yes ./$(NAME) $(ARG)
+	#valgrind --tool=drd --first-race-only=yes ./$(NAME) $(ARG)
 
 #tester:
 

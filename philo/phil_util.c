@@ -6,7 +6,7 @@
 /*   By: niclaw <nicklaw@gmail.com>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 14:21:46 by niclaw            #+#    #+#             */
-/*   Updated: 2023/05/15 22:01:33 by niclaw           ###   ########.fr       */
+/*   Updated: 2023/05/16 15:24:41 by niclaw           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ static int	rec_atoi(char *str, int start)
 	sigma = 0;
 	while (str[start])
 	{
-		if (str[start] < '0' && str[start] > '9')
+		if (str[start] < '0' || str[start] > '9')
 			return (-1);
 		sigma = (str[start] - '0') + (sigma * 10);
 		start++;

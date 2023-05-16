@@ -6,7 +6,7 @@
 /*   By: niclaw <nicklaw@gmail.com>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 22:01:16 by niclaw            #+#    #+#             */
-/*   Updated: 2023/05/15 22:45:56 by niclaw           ###   ########.fr       */
+/*   Updated: 2023/05/16 15:18:19 by niclaw           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int	philo_check(int arg_num, char **arg)
 	int	tmp;
 	int	x;
 
-	if (arg_num != 5 || arg_num != 6)
+	if (!(arg_num == 5 || arg_num == 6))
 		return (0);
 	x = 1;
 	tmp = ft_atoi(arg[1]);
@@ -33,7 +33,7 @@ int	philo_check(int arg_num, char **arg)
 				return (0);
 		}
 		if (x == 5)
-			break;
+			break ;
 		tmp = ft_atoi(arg[x++]);
 		if (tmp < 60)
 			return (0);
