@@ -6,7 +6,7 @@
 /*   By: niclaw <nicklaw@gmail.com>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 14:21:39 by niclaw            #+#    #+#             */
-/*   Updated: 2023/05/17 12:12:07 by niclaw           ###   ########.fr       */
+/*   Updated: 2023/05/17 16:17:17 by niclaw           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	*manager(void *arg)
 	t_phil	*phil;
 
 	phil = (t_phil *) arg;
-	while (*(phil->end) != phil->arg.number_of_philosophers)
+	while (phil->times_eaten != phil->arg.times_each_philosopher_must_eat)
 	{
 		if (die (phil))
 			return (0);
@@ -35,13 +35,12 @@ int	die(t_phil *phil)
 		(s_ct.tv_usec - phil->arg.s_st.tv_usec) / 1000;
 	if ((elasped - phil->time_ate) >= phil->arg.time_to_die)
 		{
-			phil->end = phil->arg.number_of_philosophers;
-			pthread_mutex_unlock(&phil->arg.mutex);
-			printf("%lu [%d] died\n", elasped, (phil + i)->id);
-			pthread_mutex_unlock(&((phil + i)->fork));
-			pthread_mutex_unlock(&((phil + i)->r_phil->fork));
+			//phil->end = phil->arg.number_of_philosophers;
+			if (sem_wait(phil->dead))
+				exit(DONE);
+			sem_wait(phil->write);
+			printf("%lu [%d] died\n", elasped, phil->id);
 			return (1);
 		}
-	}
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: niclaw <nicklaw@gmail.com>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 18:53:39 by niclaw            #+#    #+#             */
-/*   Updated: 2023/05/17 12:12:13 by niclaw           ###   ########.fr       */
+/*   Updated: 2023/05/17 16:29:07 by niclaw           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,9 @@
 # include <semaphore.h>
 # include <fcntl.h>
 
+//define MACRO
+# define DONE 6
+# define FAILED 4
 
 typedef struct s_arg
 {
@@ -42,7 +45,7 @@ typedef struct s_phil
 	int				end;
 	sem_t			*dead;
 	sem_t			*write;
-	sem_t			**forks;
+	sem_t			*forks;
 	pthread_t		man;
 	t_arg			arg;
 }					t_phil;

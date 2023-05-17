@@ -6,7 +6,7 @@
 /*   By: niclaw <nicklaw@gmail.com>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 14:22:31 by niclaw            #+#    #+#             */
-/*   Updated: 2023/05/17 11:59:50 by niclaw           ###   ########.fr       */
+/*   Updated: 2023/05/17 16:57:45 by niclaw           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,19 +24,17 @@ int	main(int argc, char **argv)
 	}
 	arg = philo_set(argc, argv);
 	//check one philo
-	if (arg.number_of_philosophers == 1)
-		run_philo_one (arg);
-	else
-	{
+	//if (arg.number_of_philosophers == 1)
+	//	run_philo_one (arg);
+	//else
+	//{
 		
 		create_phil (&phil, arg);
 		wait_phil(&phil);
 		sem_close(phil.dead);
 		sem_close(phil.write);
-		int i = 0;
-		while (i < arg.number_of_philosophers)
-			sem_close(phil.forks[i]);
-	}
+		sem_close(phil.forks);
+	//}
 	return (0);
 }
 
@@ -56,19 +54,18 @@ void	create_phil(t_phil *phil, t_arg arg)
 	sem_unlink ("dead");
 	sem_unlink ("write");
 	sem_unlink ("fork");
-	phil->dead = sem_open("dead", O_CREAT, 0660, 0);
+	phil->dead = sem_open("dead", O_CREAT, 0660, 1);
 	if (phil->dead == SEM_FAILED)
 		return ;
-	phil->write = sem_open("write", O_CREAT, 0660, 0);
+	phil->write = sem_open("write", O_CREAT, 0660, 1);
 	if (phil->write == SEM_FAILED)
 		return ;
 	i = 0;
-	phil->forks = malloc(arg.number_of_philosophers * sizeof(sem_t*)); 
 	while (i < arg.number_of_philosophers)
 	{
 		//many fork naming problem
-		phil->forks[i] = sem_open("fork", O_CREAT, 0660, 0);
-		if (phil->forks[i] == SEM_FAILED)
+		phil->forks = sem_open("fork", O_CREAT, 0660, arg.number_of_philosophers);
+		if (phil->forks == SEM_FAILED)
 			return ;
 	}	
 	
@@ -89,6 +86,7 @@ void	create_phil(t_phil *phil, t_arg arg)
 void philo_child(t_phil* phil)
 {
 	create_phil_man(phil);
+	routine(phil);
 }
 
 static void	clear(t_phil *phil)
@@ -99,28 +97,17 @@ static void	clear(t_phil *phil)
 	return ;
 }
 
-void	*routine(void *arg)
+void	routine(t_phil *phil)
 {
-	t_phil	*phil;
-
-	phil = (t_phil *) arg;
-	if (!(phil->id % 2))
-		usleep(600);
-	while (*(phil->end) != phil->arg.number_of_philosophers)
+	//No need for delay
+	//if (!(phil->id % 2))
+	//	usleep(600);
+	while (1)
 	{
-		if (*(phil->end) == phil->arg.number_of_philosophers)
-			break ;
 		ph_fork (phil);
-		if (*(phil->end) == phil->arg.number_of_philosophers)
-			break ;
 		eat (phil);
-		if (*(phil->end) == phil->arg.number_of_philosophers)
-			break ;
 		ph_sleep (phil);
-		if (*(phil->end) == phil->arg.number_of_philosophers)
-			break ;
 		think (phil);
 	}
-	clear (phil);
 	return (NULL);
 }

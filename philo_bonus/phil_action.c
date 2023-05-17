@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   phil_action.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: niclaw <niclaw@student.42.fr>              +#+  +:+       +#+        */
+/*   By: niclaw <nicklaw@gmail.com>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 14:21:27 by niclaw            #+#    #+#             */
-/*   Updated: 2023/05/02 15:52:14 by niclaw           ###   ########.fr       */
+/*   Updated: 2023/05/17 16:43:06 by niclaw           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,28 +14,22 @@
 
 void	ph_fork(t_phil *phil)
 {
-	if (*(phil->end) == phil->arg.number_of_philosophers)
-		return ;
-	if (pthread_mutex_lock(&phil->fork) != 0)
-		return ;
-	else
-	{
-		if (*(phil->end) == phil->arg.number_of_philosophers)
-			return ;
+	if (sem_wait(&phil->forks) == -1)
+		exit(FAILED);
+		if (sem_wait(phil->write) == -1)
+			exit(FAILED);
 		printf("\033[0;33m%lu [%d] has taken a fork\033[0m\n", \
 			time_stamp(phil), phil->id);
-	}
-	if (*(phil->end) == phil->arg.number_of_philosophers)
-		return ;
-	if (pthread_mutex_lock(&(phil->r_phil->fork)) != 0)
-		return ;
-	else
-	{
-		if (*(phil->end) == phil->arg.number_of_philosophers)
-			return ;
+		if (sem_post(phil->write) == -1)
+			exit(FAILED);
+	if (sem_wait(&phil->forks) == -1)
+		exit(FAILED);
+		if (sem_wait(phil->write) == -1)
+			exit(FAILED);
 		printf("\033[0;33m%lu [%d] has taken a fork\033[0m\n", \
 			time_stamp(phil), phil->id);
-	}
+		if (sem_post(phil->write) == -1)
+			exit(FAILED);
 	return ;
 }
 
@@ -44,27 +38,22 @@ void	eat(t_phil *phil)
 	long			tmp_time;
 
 	phil->time_ate = time_stamp(phil);
-	if (*(phil->end) == phil->arg.number_of_philosophers)
-		return ;
+	if (sem_wait(phil->write) == -1)
+		exit(FAILED);
 	printf("\033[0;32m%lu [%d] is eating\033[0m\n", phil->time_ate, phil->id);
+	if (sem_post(phil->write) == -1)
+		exit(FAILED);
 	phil->times_eaten++;
 	if (phil->arg.times_each_philosopher_must_eat > 0 && \
 		phil->times_eaten >= phil->arg.times_each_philosopher_must_eat)
-	{
-		pthread_mutex_lock(&phil->arg.mutex);
-		*(phil->end) += 1;
-		pthread_mutex_unlock(&phil->arg.mutex);
-	}
+		exit(DONE);
 	tmp_time = phil->time_ate;
-	while (time_stamp(phil) <= (tmp_time + phil->arg.time_to_eat) && \
-		*(phil->end) != phil->arg.number_of_philosophers)
-	{
+	while (time_stamp(phil) <= (tmp_time + phil->arg.time_to_eat))
 		usleep(200);
-		if (*(phil->end) == phil->arg.number_of_philosophers)
-			return ;
-	}
-	pthread_mutex_unlock(&phil->fork);
-	pthread_mutex_unlock(&phil->r_phil->fork);
+	if (sem_post(&phil->forks) == -1)
+		exit(FAILED);
+	if (sem_post(&phil->forks) == -1)
+		exit(FAILED);
 	return ;
 }
 
@@ -77,18 +66,15 @@ void	ph_sleep(t_phil *phil)
 	gettimeofday(&s_ct, 0);
 	elasped = (s_ct.tv_sec - phil->arg.s_st.tv_sec) * 1000 + \
 			(s_ct.tv_usec - phil->arg.s_st.tv_usec) / 1000;
-	if (*(phil->end) == phil->arg.number_of_philosophers)
-		return ;
+	if (sem_wait(phil->write) == -1)
+		exit(FAILED);
 	printf("\033[0;36m%lu [%d] is sleeping\033[0m\n", elasped, phil->id);
-	if (*(phil->end) == phil->arg.number_of_philosophers)
-		return ;
+	if (sem_post(phil->write) == -1)
+		exit(FAILED);
 	tmp_time = elasped;
-	while (elasped <= (tmp_time + phil->arg.time_to_sleep) && \
-		*(phil->end) != phil->arg.number_of_philosophers)
+	while (elasped <= (tmp_time + phil->arg.time_to_sleep))
 	{
 		usleep(200);
-		if (*(phil->end) == phil->arg.number_of_philosophers)
-			return ;
 		gettimeofday(&s_ct, 0);
 		elasped = (s_ct.tv_sec - phil->arg.s_st.tv_sec) * 1000 + \
 			(s_ct.tv_usec - phil->arg.s_st.tv_usec) / 1000;
@@ -104,8 +90,10 @@ void	think(t_phil *phil)
 	gettimeofday(&s_ct, 0);
 	elasped = (s_ct.tv_sec - phil->arg.s_st.tv_sec) * 1000 + \
 			(s_ct.tv_usec - phil->arg.s_st.tv_usec) / 1000;
-	if (*(phil->end) == phil->arg.number_of_philosophers)
-		return ;
+	if (sem_wait(phil->write) == -1)
+		exit(FAILED);
 	printf("\033[0;35m%lu [%d] is thinking\033[0m\n", elasped, phil->id);
+	if (sem_post(phil->write) == -1)
+		exit(FAILED);
 	return ;
 }
