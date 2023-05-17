@@ -6,7 +6,7 @@
 #    By: niclaw <nicklaw@gmail.com>                 +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/09/24 13:59:17 by niclaw            #+#    #+#              #
-#    Updated: 2023/05/16 16:07:25 by niclaw           ###   ########.fr        #
+#    Updated: 2023/05/16 20:34:34 by niclaw           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,12 +14,13 @@
 # This is where you want to put the name of your program or library that you will be compiling
 
 NAME	= philo
+BONUS_NAME = philo_bonus
 
 ### DIR ###
 # all the dir to neatly keep your .c and .h
 
 SRC_DIR		= 
-BONUS_DIR	= bonus/
+BONUS_DIR	= philo_bonus/
 HEAD		= 
 SHARE_DIR	= share/
 BUILD_DIR =	./build/
