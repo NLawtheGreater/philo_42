@@ -6,7 +6,7 @@
 /*   By: niclaw <nicklaw@gmail.com>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 22:01:16 by niclaw            #+#    #+#             */
-/*   Updated: 2023/05/16 15:18:19 by niclaw           ###   ########.fr       */
+/*   Updated: 2023/05/17 12:03:18 by niclaw           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ void	create_phil_man(t_phil *phil)
 		printf("pthread create error");
 		return ;
 	}
+	pthread_detach(phil->man);
 	return ;
 }
 

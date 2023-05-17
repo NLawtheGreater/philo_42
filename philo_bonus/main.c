@@ -6,7 +6,7 @@
 /*   By: niclaw <nicklaw@gmail.com>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 14:22:31 by niclaw            #+#    #+#             */
-/*   Updated: 2023/05/15 22:45:22 by niclaw           ###   ########.fr       */
+/*   Updated: 2023/05/17 11:59:50 by niclaw           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 int	main(int argc, char **argv)
 {
 	t_arg	arg;
-	t_phil	*phil;
+	t_phil	phil;
 
 	if (!philo_check (argc, argv))
 	{
@@ -23,57 +23,72 @@ int	main(int argc, char **argv)
 		return (0);
 	}
 	arg = philo_set(argc, argv);
+	//check one philo
 	if (arg.number_of_philosophers == 1)
 		run_philo_one (arg);
 	else
 	{
-		phil = malloc (sizeof(t_phil) * (arg.number_of_philosophers));
-		if (!phil)
-			return (0);
-		create_phil (phil, arg);
-		wait_phil(phil);
-		free(phil->end);
-		free(phil);
+		
+		create_phil (&phil, arg);
+		wait_phil(&phil);
+		sem_close(phil.dead);
+		sem_close(phil.write);
+		int i = 0;
+		while (i < arg.number_of_philosophers)
+			sem_close(phil.forks[i]);
 	}
 	return (0);
 }
 
-static void	init_phil(t_phil *phil, t_arg arg, int i)
+static void	init_phil(t_phil *phil, t_arg arg)
 {
-	pthread_mutex_init(&(phil[i].fork), NULL);
-	phil[i].id = i + 1;
-	phil[i].arg = arg;
-	phil[i].r_phil = phil + ((i + 1) % (arg.number_of_philosophers));
-	phil[i].times_eaten = 0;
-	phil[i].time_ate = 0;
+	gettimeofday(&arg.s_st, 0);
+	phil->arg = arg;
+	phil->times_eaten = 0;
+	phil->time_ate = 0;
 	return ;
 }
 
 void	create_phil(t_phil *phil, t_arg arg)
 {
 	int	i;
-	int	*end;
-
-	gettimeofday(&arg.s_st, 0);
-	i = 0;
-	end = malloc(sizeof(int *));
-	if (!end)
+	
+	sem_unlink ("dead");
+	sem_unlink ("write");
+	sem_unlink ("fork");
+	phil->dead = sem_open("dead", O_CREAT, 0660, 0);
+	if (phil->dead == SEM_FAILED)
 		return ;
-	*end = 0;
-	pthread_mutex_init(&(arg.mutex), NULL);
+	phil->write = sem_open("write", O_CREAT, 0660, 0);
+	if (phil->write == SEM_FAILED)
+		return ;
+	i = 0;
+	phil->forks = malloc(arg.number_of_philosophers * sizeof(sem_t*)); 
 	while (i < arg.number_of_philosophers)
 	{
-		init_phil(phil, arg, i);
-		phil[i].end = end;
-		if (pthread_create(&phil[i].ph, NULL, &routine, (phil + i)) != 0)
-		{
-			printf("pthread create error");
+		//many fork naming problem
+		phil->forks[i] = sem_open("fork", O_CREAT, 0660, 0);
+		if (phil->forks[i] == SEM_FAILED)
 			return ;
-		}
+	}	
+	
+	init_phil(phil, arg);
+	pid_t pid;
+	while (i < arg.number_of_philosophers)
+	{
+		phil->id = (i + 1);
+		pid = fork();
+		if (pid < 0)
+			return ;
+		else if (pid == 0)
+			philo_child(phil);
 		i++;
 	}
-	create_phil_man(phil);
 	return ;
+}
+void philo_child(t_phil* phil)
+{
+	create_phil_man(phil);
 }
 
 static void	clear(t_phil *phil)

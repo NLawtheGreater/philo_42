@@ -6,7 +6,7 @@
 /*   By: niclaw <nicklaw@gmail.com>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 18:53:39 by niclaw            #+#    #+#             */
-/*   Updated: 2023/05/15 22:22:03 by niclaw           ###   ########.fr       */
+/*   Updated: 2023/05/17 12:12:13 by niclaw           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,9 @@
 # include <unistd.h>
 # include <stdio.h>
 # include <stdlib.h>
+# include <semaphore.h>
+# include <fcntl.h>
+
 
 typedef struct s_arg
 {
@@ -27,22 +30,21 @@ typedef struct s_arg
 	long			time_to_sleep;
 	int				times_each_philosopher_must_eat;
 	struct timeval	s_st;
-	pthread_mutex_t	mutex;
 }					t_arg;
 
 typedef struct s_phil
 {
 	int				id;
 	long			times_eaten;
-	pthread_t		ph;
-	pthread_t		man;
 	long			time_ate;
 	int				finish;
 	int				time_to_think;
+	int				end;
+	sem_t			*dead;
+	sem_t			*write;
+	sem_t			**forks;
+	pthread_t		man;
 	t_arg			arg;
-	pthread_mutex_t	fork;
-	struct s_phil	*r_phil;
-	int				*end;
 }					t_phil;
 
 void	run_philo_one(t_arg arg);
