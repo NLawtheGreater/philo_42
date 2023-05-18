@@ -6,18 +6,26 @@
 /*   By: niclaw <nicklaw@gmail.com>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 14:21:46 by niclaw            #+#    #+#             */
-/*   Updated: 2023/05/18 16:32:37 by niclaw           ###   ########.fr       */
+/*   Updated: 2023/05/18 17:35:46 by niclaw           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_b.h"
 
-void	run_philo_one(t_arg arg)
+void	routine(t_phil *phil)
 {
-	printf("0 [%d] has taken a fork\n", 1);
-	usleep(arg.time_to_die * 1000);
-	printf("%ld [%d] died\n", arg.time_to_die, 1);
-	return ;
+	if (!(phil->id % 2))
+		usleep(600);
+	create_phil_man(phil);
+	while (phil->times_eaten < phil->arg.times_each_philosopher_must_eat || \
+		phil->arg.times_each_philosopher_must_eat == -1)
+	{
+		ph_fork (phil);
+		eat (phil);
+		ph_sleep (phil);
+		think (phil);
+	}
+	exit(DONE);
 }
 
 long	time_stamp(t_phil *phil)
@@ -67,7 +75,7 @@ void	wait_phil(t_phil *phil)
 			i = 0;
 			while (i < phil->arg.number_of_philosophers)
 				kill(phil->pid[i++], SIGTERM);
-			break;
+			break ;
 		}
 		i++;
 	}

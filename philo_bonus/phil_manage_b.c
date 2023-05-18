@@ -6,7 +6,7 @@
 /*   By: niclaw <nicklaw@gmail.com>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 14:21:39 by niclaw            #+#    #+#             */
-/*   Updated: 2023/05/18 16:21:00 by niclaw           ###   ########.fr       */
+/*   Updated: 2023/05/18 17:33:43 by niclaw           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,14 +35,13 @@ int	die(t_phil *phil)
 	elasped = (s_ct.tv_sec - phil->arg.s_st.tv_sec) * 1000 + \
 		(s_ct.tv_usec - phil->arg.s_st.tv_usec) / 1000;
 	if ((elasped - phil->time_ate) >= phil->arg.time_to_die)
-		{
-			//phil->end = phil->arg.number_of_philosophers;
-			if (sem_wait(phil->dead))
-				exit(DEAD);
-			sem_wait(phil->write);
-			printf("%lu [%d] died\n", elasped, phil->id);
+	{
+		if (sem_wait(phil->dead))
 			exit(DEAD);
-		}
+		sem_wait(phil->write);
+		printf("%lu [%d] died\n", elasped, phil->id);
+		exit(DEAD);
+	}
 	return (0);
 }
 

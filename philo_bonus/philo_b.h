@@ -6,7 +6,7 @@
 /*   By: niclaw <nicklaw@gmail.com>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 18:53:39 by niclaw            #+#    #+#             */
-/*   Updated: 2023/05/18 17:11:44 by niclaw           ###   ########.fr       */
+/*   Updated: 2023/05/18 17:49:57 by niclaw           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ typedef struct s_phil
 }					t_phil;
 
 void	run_philo_one(t_arg arg);
-int		create_phil(t_phil *phil, t_arg arg);
+int		create_phil(t_phil *phil);
 void	routine(t_phil *phil);
 void	ph_fork(t_phil *phil);
 void	eat(t_phil *phil);
@@ -70,5 +70,7 @@ int		ft_atoi(char *str);
 void	create_phil_man(t_phil *phil);
 int		philo_check(int arg_num, char **arg);
 t_arg	philo_set(int argc, char **argv);
+int		sem_fail(t_phil *phil);
+int		clear(t_phil *phil);
 
 #endif

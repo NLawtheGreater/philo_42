@@ -6,7 +6,7 @@
 /*   By: niclaw <nicklaw@gmail.com>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 22:01:16 by niclaw            #+#    #+#             */
-/*   Updated: 2023/05/18 16:18:28 by niclaw           ###   ########.fr       */
+/*   Updated: 2023/05/18 17:52:17 by niclaw           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,4 +54,11 @@ t_arg	philo_set(int argc, char **argv)
 	arg.time_to_eat = ft_atoi(argv[3]);
 	arg.time_to_sleep = ft_atoi(argv[4]);
 	return (arg);
+}
+
+int	clear(t_phil *phil)
+{
+	sem_fail(phil);
+	free(phil->pid);
+	return (EXIT_FAILURE);
 }
