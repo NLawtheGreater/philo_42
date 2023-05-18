@@ -6,11 +6,11 @@
 /*   By: niclaw <nicklaw@gmail.com>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 14:21:39 by niclaw            #+#    #+#             */
-/*   Updated: 2023/05/17 16:17:17 by niclaw           ###   ########.fr       */
+/*   Updated: 2023/05/18 15:16:07 by niclaw           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo.h"
+#include "philo_b.h"
 
 void	*manager(void *arg)
 {
@@ -37,10 +37,10 @@ int	die(t_phil *phil)
 		{
 			//phil->end = phil->arg.number_of_philosophers;
 			if (sem_wait(phil->dead))
-				exit(DONE);
+				exit(DEAD);
 			sem_wait(phil->write);
 			printf("%lu [%d] died\n", elasped, phil->id);
-			return (1);
+			exit(DEAD);
 		}
 	return (0);
 }

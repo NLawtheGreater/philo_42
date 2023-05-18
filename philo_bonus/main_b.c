@@ -6,11 +6,11 @@
 /*   By: niclaw <nicklaw@gmail.com>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 14:22:31 by niclaw            #+#    #+#             */
-/*   Updated: 2023/05/18 10:48:46 by niclaw           ###   ########.fr       */
+/*   Updated: 2023/05/18 15:16:23 by niclaw           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo.h"
+#include "philo_b.h"
 
 int	main(int argc, char **argv)
 {
@@ -44,6 +44,7 @@ static void	init_phil(t_phil *phil, t_arg arg)
 	phil->arg = arg;
 	phil->times_eaten = 0;
 	phil->time_ate = 0;
+	phil->pid = malloc((arg.number_of_philosophers * sizeof(pid_t *)));
 	return ;
 }
 
@@ -61,22 +62,14 @@ void	create_phil(t_phil *phil, t_arg arg)
 	if (phil->write == SEM_FAILED)
 		return ;
 	i = 0;
-	while (i < arg.number_of_philosophers)
-	{
-		phil->forks = sem_open("fork", O_CREAT, 0660, arg.number_of_philosophers);
-		if (phil->forks == SEM_FAILED)
-			return ;
-	}	
-	
 	init_phil(phil, arg);
-	pid_t pid;
 	while (i < arg.number_of_philosophers)
 	{
 		phil->id = (i + 1);
-		pid = fork();
-		if (pid < 0)
+		phil->pid[i] = fork();
+		if (phil->pid[i] < 0)
 			return ;
-		else if (pid == 0)
+		else if (phil->pid[i] == 0)
 			philo_child(phil);
 		i++;
 	}
@@ -88,14 +81,14 @@ void philo_child(t_phil* phil)
 	routine(phil);
 }
 
-static void	clear(t_phil *phil)
+/*static void	clear(t_phil *phil)
 {
 	pthread_mutex_unlock(&phil->fork);
 	pthread_mutex_unlock(&phil->r_phil->fork);
 	pthread_mutex_destroy(&(phil->fork));
 	return ;
 }
-
+*/
 void	routine(t_phil *phil)
 {
 	//No need for delay
@@ -108,5 +101,5 @@ void	routine(t_phil *phil)
 		ph_sleep (phil);
 		think (phil);
 	}
-	return (NULL);
+	return ;
 }

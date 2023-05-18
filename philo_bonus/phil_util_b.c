@@ -6,11 +6,11 @@
 /*   By: niclaw <nicklaw@gmail.com>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 14:21:46 by niclaw            #+#    #+#             */
-/*   Updated: 2023/05/18 09:08:53 by niclaw           ###   ########.fr       */
+/*   Updated: 2023/05/18 15:16:19 by niclaw           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo.h"
+#include "philo_b.h"
 
 void	run_philo_one(t_arg arg)
 {
@@ -56,17 +56,25 @@ int	ft_atoi(char *str)
 void	wait_phil(t_phil *phil)
 {
 	int	wstatus;
+	int	i;
 
 	i = 0;
-	waitpid(-1, &wstatus, 0);
-	if (WIFEXITED(wstatus))
-
-	else
+	while (i < phil->arg.number_of_philosophers)
 	{
-		sem_close(phil.dead);
-		sem_close(phil.write);
-		sem_close(phil.forks);
+		waitpid(-1, &wstatus, 0);
+		if (WEXITSTATUS(wstatus) == DEAD)
+		{
+			i = 0;
+			while (i < phil->arg.number_of_philosophers)
+				kill(phil->pid[i++], SIGTERM);
+			break;
+		}
+		i++;
 	}
-	waitpid();
+	sem_close(phil->dead);
+	sem_close(phil->write);
+	sem_close(phil->forks);
+	free(phil->pid);
+	
 	return ;
 }

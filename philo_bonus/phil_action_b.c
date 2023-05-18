@@ -6,15 +6,15 @@
 /*   By: niclaw <nicklaw@gmail.com>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 14:21:27 by niclaw            #+#    #+#             */
-/*   Updated: 2023/05/17 16:43:06 by niclaw           ###   ########.fr       */
+/*   Updated: 2023/05/18 15:16:00 by niclaw           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo.h"
+#include "philo_b.h"
 
 void	ph_fork(t_phil *phil)
 {
-	if (sem_wait(&phil->forks) == -1)
+	if (sem_wait(phil->forks) == -1)
 		exit(FAILED);
 		if (sem_wait(phil->write) == -1)
 			exit(FAILED);
@@ -22,7 +22,7 @@ void	ph_fork(t_phil *phil)
 			time_stamp(phil), phil->id);
 		if (sem_post(phil->write) == -1)
 			exit(FAILED);
-	if (sem_wait(&phil->forks) == -1)
+	if (sem_wait(phil->forks) == -1)
 		exit(FAILED);
 		if (sem_wait(phil->write) == -1)
 			exit(FAILED);
@@ -50,9 +50,9 @@ void	eat(t_phil *phil)
 	tmp_time = phil->time_ate;
 	while (time_stamp(phil) <= (tmp_time + phil->arg.time_to_eat))
 		usleep(200);
-	if (sem_post(&phil->forks) == -1)
+	if (sem_post(phil->forks) == -1)
 		exit(FAILED);
-	if (sem_post(&phil->forks) == -1)
+	if (sem_post(phil->forks) == -1)
 		exit(FAILED);
 	return ;
 }

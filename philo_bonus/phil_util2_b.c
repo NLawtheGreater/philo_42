@@ -6,11 +6,11 @@
 /*   By: niclaw <nicklaw@gmail.com>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 22:01:16 by niclaw            #+#    #+#             */
-/*   Updated: 2023/05/17 12:03:18 by niclaw           ###   ########.fr       */
+/*   Updated: 2023/05/18 15:16:12 by niclaw           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo.h"
+#include "philo_b.h"
 
 int	philo_check(int arg_num, char **arg)
 {

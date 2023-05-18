@@ -1,17 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philo.h                                            :+:      :+:    :+:   */
+/*   philo_b.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: niclaw <nicklaw@gmail.com>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 18:53:39 by niclaw            #+#    #+#             */
-/*   Updated: 2023/05/18 09:01:49 by niclaw           ###   ########.fr       */
+/*   Updated: 2023/05/18 15:21:34 by niclaw           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PHILO_H
-# define PHILO_H
+#ifndef PHILO_B_H
+# define PHILO_B_H
 
 # include <pthread.h>
 # include <sys/time.h>
@@ -21,10 +21,12 @@
 # include <semaphore.h>
 # include <fcntl.h>
 # include <sys/wait.h>
+# include <signal.h>
 
 //define MACRO
 # define DONE 2
 # define FAILED 4
+# define DEAD 5
 
 typedef struct s_arg
 {
@@ -47,13 +49,14 @@ typedef struct s_phil
 	sem_t			*dead;
 	sem_t			*write;
 	sem_t			*forks;
+	pid_t			*pid;
 	pthread_t		man;
 	t_arg			arg;
 }					t_phil;
 
 void	run_philo_one(t_arg arg);
 void	create_phil(t_phil *phil, t_arg arg);
-void	*routine(void *arg);
+void	routine(t_phil *phil);
 void	ph_fork(t_phil *phil);
 void	eat(t_phil *phil);
 void	ph_sleep(t_phil *phil);
@@ -66,5 +69,6 @@ int		ft_atoi(char *str);
 void	create_phil_man(t_phil *phil);
 int		philo_check(int arg_num, char **arg);
 t_arg	philo_set(int argc, char **argv);
+void	philo_child(t_phil* phil);
 
 #endif
