@@ -6,7 +6,7 @@
 /*   By: niclaw <nicklaw@gmail.com>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 14:22:31 by niclaw            #+#    #+#             */
-/*   Updated: 2023/05/18 16:43:00 by niclaw           ###   ########.fr       */
+/*   Updated: 2023/05/18 16:57:52 by niclaw           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ static int	init_phil(t_phil *phil, t_arg arg)
 	phil->times_eaten = 0;
 	phil->time_ate = 0;
 	phil->pid = malloc((arg.number_of_philosophers * sizeof(pid_t *)));
-	if (phil->pid)
+	if (!phil->pid)
 		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }
@@ -102,9 +102,8 @@ void philo_child(t_phil* phil)
 
 void	routine(t_phil *phil)
 {
-	//No need for delay
-	//if (!(phil->id % 2))
-	//	usleep(600);
+	if (!(phil->id % 2))
+		usleep(600);
 	create_phil_man(phil);
 	while (phil->times_eaten < phil->arg.times_each_philosopher_must_eat || \
 		phil->arg.times_each_philosopher_must_eat == -1)
