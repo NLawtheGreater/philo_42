@@ -6,7 +6,7 @@
 #    By: niclaw <nicklaw@gmail.com>                 +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/09/24 13:59:17 by niclaw            #+#    #+#              #
-#    Updated: 2023/05/18 17:27:42 by niclaw           ###   ########.fr        #
+#    Updated: 2023/05/18 18:10:48 by niclaw           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -67,7 +67,8 @@ ARG  =  4 90 60 60
 # the compilation flag that will we will use for the project
 
 CC	= gcc
-CFLAGS	=   -g -Wall -Wextra -Wextra $(PTHR) -fsanitize=address  
+CFLAGS	=   -g -Wall -Wextra -Wextra $(PTHR) 
+#-fsanitize=address  
 #ASAN_OPTIONS=detect_leaks=1
 RM	= rm -f
 
