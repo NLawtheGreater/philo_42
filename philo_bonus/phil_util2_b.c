@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   phil_util2.c                                       :+:      :+:    :+:   */
+/*   phil_util2_b.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: niclaw <nicklaw@gmail.com>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 22:01:16 by niclaw            #+#    #+#             */
-/*   Updated: 2023/05/18 15:16:12 by niclaw           ###   ########.fr       */
+/*   Updated: 2023/05/18 16:18:28 by niclaw           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,17 +39,6 @@ int	philo_check(int arg_num, char **arg)
 			return (0);
 	}
 	return (1);
-}
-
-void	create_phil_man(t_phil *phil)
-{
-	if (pthread_create(&phil->man, NULL, &manager, phil) != 0)
-	{
-		printf("pthread create error");
-		return ;
-	}
-	pthread_detach(phil->man);
-	return ;
 }
 
 t_arg	philo_set(int argc, char **argv)

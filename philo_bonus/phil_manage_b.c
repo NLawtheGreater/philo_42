@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   phil_manage.c                                      :+:      :+:    :+:   */
+/*   phil_manage_b.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: niclaw <nicklaw@gmail.com>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 14:21:39 by niclaw            #+#    #+#             */
-/*   Updated: 2023/05/18 15:16:07 by niclaw           ###   ########.fr       */
+/*   Updated: 2023/05/18 16:21:00 by niclaw           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,8 @@ void	*manager(void *arg)
 	t_phil	*phil;
 
 	phil = (t_phil *) arg;
-	while (phil->times_eaten != phil->arg.times_each_philosopher_must_eat)
+	while (phil->times_eaten < phil->arg.times_each_philosopher_must_eat || \
+		phil->arg.times_each_philosopher_must_eat == -1)
 	{
 		if (die (phil))
 			return (0);
@@ -43,4 +44,15 @@ int	die(t_phil *phil)
 			exit(DEAD);
 		}
 	return (0);
+}
+
+void	create_phil_man(t_phil *phil)
+{
+	if (pthread_create(&phil->man, NULL, &manager, phil) != 0)
+	{
+		printf("pthread create error");
+		return ;
+	}
+	pthread_detach(phil->man);
+	return ;
 }
