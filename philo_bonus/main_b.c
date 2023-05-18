@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   main_b.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: niclaw <nicklaw@gmail.com>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 14:22:31 by niclaw            #+#    #+#             */
-/*   Updated: 2023/05/18 15:16:23 by niclaw           ###   ########.fr       */
+/*   Updated: 2023/05/18 15:41:25 by niclaw           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,12 +54,15 @@ void	create_phil(t_phil *phil, t_arg arg)
 	
 	sem_unlink ("dead");
 	sem_unlink ("write");
-	sem_unlink ("fork");
+	sem_unlink ("forks");
 	phil->dead = sem_open("dead", O_CREAT, 0660, 1);
 	if (phil->dead == SEM_FAILED)
 		return ;
 	phil->write = sem_open("write", O_CREAT, 0660, 1);
 	if (phil->write == SEM_FAILED)
+		return ;
+	phil->forks = sem_open("forks", O_CREAT, 0660, arg.number_of_philosophers);
+	if (phil->forks == SEM_FAILED)
 		return ;
 	i = 0;
 	init_phil(phil, arg);

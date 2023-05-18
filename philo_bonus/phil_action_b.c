@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   phil_action.c                                      :+:      :+:    :+:   */
+/*   phil_action_b.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: niclaw <nicklaw@gmail.com>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 14:21:27 by niclaw            #+#    #+#             */
-/*   Updated: 2023/05/18 15:16:00 by niclaw           ###   ########.fr       */
+/*   Updated: 2023/05/18 15:42:56 by niclaw           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,20 +16,20 @@ void	ph_fork(t_phil *phil)
 {
 	if (sem_wait(phil->forks) == -1)
 		exit(FAILED);
-		if (sem_wait(phil->write) == -1)
-			exit(FAILED);
-		printf("\033[0;33m%lu [%d] has taken a fork\033[0m\n", \
-			time_stamp(phil), phil->id);
-		if (sem_post(phil->write) == -1)
-			exit(FAILED);
+	if (sem_wait(phil->write) == -1)
+		exit(FAILED);
+	printf("\033[0;33m%lu [%d] has taken a fork\033[0m\n", \
+		time_stamp(phil), phil->id);
+	if (sem_post(phil->write) == -1)
+		exit(FAILED);
 	if (sem_wait(phil->forks) == -1)
 		exit(FAILED);
-		if (sem_wait(phil->write) == -1)
-			exit(FAILED);
-		printf("\033[0;33m%lu [%d] has taken a fork\033[0m\n", \
-			time_stamp(phil), phil->id);
-		if (sem_post(phil->write) == -1)
-			exit(FAILED);
+	if (sem_wait(phil->write) == -1)
+		exit(FAILED);
+	printf("\033[0;33m%lu [%d] has taken a fork\033[0m\n", \
+		time_stamp(phil), phil->id);
+	if (sem_post(phil->write) == -1)
+		exit(FAILED);
 	return ;
 }
 

@@ -6,7 +6,7 @@
 #    By: niclaw <nicklaw@gmail.com>                 +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/09/24 13:59:17 by niclaw            #+#    #+#              #
-#    Updated: 2023/05/18 15:16:55 by niclaw           ###   ########.fr        #
+#    Updated: 2023/05/18 15:42:06 by niclaw           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -123,6 +123,7 @@ fclean:	clean
 
 re:	fclean all
 
+re-bonus:	fclean bonus
 
 mem:	
 	leaks --atExit -- ./$(NAME) $(ARG)
