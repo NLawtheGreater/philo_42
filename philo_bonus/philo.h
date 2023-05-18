@@ -6,7 +6,7 @@
 /*   By: niclaw <nicklaw@gmail.com>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 18:53:39 by niclaw            #+#    #+#             */
-/*   Updated: 2023/05/17 16:29:07 by niclaw           ###   ########.fr       */
+/*   Updated: 2023/05/18 09:01:49 by niclaw           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,10 @@
 # include <stdlib.h>
 # include <semaphore.h>
 # include <fcntl.h>
+# include <sys/wait.h>
 
 //define MACRO
-# define DONE 6
+# define DONE 2
 # define FAILED 4
 
 typedef struct s_arg

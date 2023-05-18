@@ -6,7 +6,7 @@
 /*   By: niclaw <nicklaw@gmail.com>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 14:22:31 by niclaw            #+#    #+#             */
-/*   Updated: 2023/05/17 16:57:45 by niclaw           ###   ########.fr       */
+/*   Updated: 2023/05/18 10:48:46 by niclaw           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,6 @@ void	create_phil(t_phil *phil, t_arg arg)
 	i = 0;
 	while (i < arg.number_of_philosophers)
 	{
-		//many fork naming problem
 		phil->forks = sem_open("fork", O_CREAT, 0660, arg.number_of_philosophers);
 		if (phil->forks == SEM_FAILED)
 			return ;

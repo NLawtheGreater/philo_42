@@ -6,7 +6,7 @@
 /*   By: niclaw <nicklaw@gmail.com>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 14:21:46 by niclaw            #+#    #+#             */
-/*   Updated: 2023/05/16 15:24:41 by niclaw           ###   ########.fr       */
+/*   Updated: 2023/05/18 09:08:53 by niclaw           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,14 +55,18 @@ int	ft_atoi(char *str)
 
 void	wait_phil(t_phil *phil)
 {
-	int	i;
+	int	wstatus;
 
 	i = 0;
-	while (i < phil->arg.number_of_philosophers)
+	waitpid(-1, &wstatus, 0);
+	if (WIFEXITED(wstatus))
+
+	else
 	{
-		pthread_join((phil + i)->ph, NULL);
-		i++;
+		sem_close(phil.dead);
+		sem_close(phil.write);
+		sem_close(phil.forks);
 	}
-	pthread_join(phil->man, NULL);
+	waitpid();
 	return ;
 }
