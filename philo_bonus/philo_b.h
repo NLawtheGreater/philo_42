@@ -6,7 +6,7 @@
 /*   By: niclaw <nicklaw@gmail.com>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 18:53:39 by niclaw            #+#    #+#             */
-/*   Updated: 2023/05/18 16:11:38 by niclaw           ###   ########.fr       */
+/*   Updated: 2023/05/18 17:11:44 by niclaw           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ typedef struct s_phil
 	int				time_to_think;
 	int				end;
 	sem_t			*dead;
+	sem_t			*table;
 	sem_t			*write;
 	sem_t			*forks;
 	pid_t			*pid;
@@ -69,6 +70,5 @@ int		ft_atoi(char *str);
 void	create_phil_man(t_phil *phil);
 int		philo_check(int arg_num, char **arg);
 t_arg	philo_set(int argc, char **argv);
-void	philo_child(t_phil* phil);
 
 #endif

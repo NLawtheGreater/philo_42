@@ -6,7 +6,7 @@
 /*   By: niclaw <nicklaw@gmail.com>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 14:22:31 by niclaw            #+#    #+#             */
-/*   Updated: 2023/05/18 16:57:52 by niclaw           ###   ########.fr       */
+/*   Updated: 2023/05/18 17:23:53 by niclaw           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ static int sem_fail(t_phil *phil)
 	if (phil->write != SEM_FAILED)
 		sem_close(phil->write);
 	if (phil->forks != SEM_FAILED)
+		sem_close(phil->forks);
+	if (phil->table != SEM_FAILED)
 		sem_close(phil->forks);
 	return(EXIT_FAILURE);
 }
@@ -39,17 +41,11 @@ int	main(int argc, char **argv)
 		return (0);
 	}
 	arg = philo_set(argc, argv);
-	//check one philo
-	//if (arg.number_of_philosophers == 1)
-	//	run_philo_one (arg);
-	//else
-	//{
 		
 	if (create_phil (&phil, arg) == EXIT_FAILURE)
 		return (EXIT_FAILURE);
 	wait_phil(&phil);
 	clear(&phil);
-	//}
 	return (0);
 }
 
@@ -73,10 +69,13 @@ int	create_phil(t_phil *phil, t_arg arg)
 	sem_unlink ("dead");
 	sem_unlink ("write");
 	sem_unlink ("forks");
+	sem_unlink ("table");
 	phil->dead = sem_open("dead", O_CREAT, 0644, 1);
 	phil->write = sem_open("write", O_CREAT, 0644, 1);
+	phil->table = sem_open("table", O_CREAT, 0644, 1);
 	phil->forks = sem_open("forks", O_CREAT, 0644, arg.number_of_philosophers);
-	if (phil->forks == SEM_FAILED || phil->write == SEM_FAILED || phil->dead == SEM_FAILED)
+	if (phil->forks == SEM_FAILED || phil->write == SEM_FAILED || \
+	phil->dead == SEM_FAILED || phil->table == SEM_FAILED)
 		return (sem_fail(phil));
 	i = 0;
 	if (init_phil(phil, arg) == EXIT_FAILURE)
@@ -92,11 +91,6 @@ int	create_phil(t_phil *phil, t_arg arg)
 		i++;
 	}
 	return (EXIT_SUCCESS);
-}
-void philo_child(t_phil* phil)
-{
-	
-	routine(phil);
 }
 
 

@@ -6,7 +6,7 @@
 /*   By: niclaw <nicklaw@gmail.com>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 14:21:27 by niclaw            #+#    #+#             */
-/*   Updated: 2023/05/18 16:49:47 by niclaw           ###   ########.fr       */
+/*   Updated: 2023/05/18 17:22:35 by niclaw           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,7 @@
 
 void	ph_fork(t_phil *phil)
 {
-	if (sem_wait(phil->forks) == -1)
-		exit(FAILED);
-	if (sem_wait(phil->write) == -1)
-		exit(FAILED);
-	printf("\033[0;33m%lu [%d] has taken a fork\033[0m\n", \
-		time_stamp(phil), phil->id);
-	if (sem_post(phil->write) == -1)
+	if (sem_wait(phil->table) == -1)
 		exit(FAILED);
 	if (sem_wait(phil->forks) == -1)
 		exit(FAILED);
@@ -29,6 +23,16 @@ void	ph_fork(t_phil *phil)
 	printf("\033[0;33m%lu [%d] has taken a fork\033[0m\n", \
 		time_stamp(phil), phil->id);
 	if (sem_post(phil->write) == -1)
+		exit(FAILED);
+	if (sem_wait(phil->forks) == -1)
+		exit(FAILED);
+	if (sem_wait(phil->write) == -1)
+		exit(FAILED);
+	printf("\033[0;33m%lu [%d] has taken a fork\033[0m\n", \
+		time_stamp(phil), phil->id);
+	if (sem_post(phil->write) == -1)
+		exit(FAILED);
+	if (sem_post(phil->table) == -1)
 		exit(FAILED);
 	return ;
 }
@@ -43,10 +47,6 @@ void	eat(t_phil *phil)
 	printf("\033[0;32m%lu [%d] is eating\033[0m\n", phil->time_ate, phil->id);
 	if (sem_post(phil->write) == -1)
 		exit(FAILED);
-	phil->times_eaten++;
-	if (phil->arg.times_each_philosopher_must_eat > 0 && \
-		phil->times_eaten >= phil->arg.times_each_philosopher_must_eat)
-		exit(DONE);
 	tmp_time = phil->time_ate;
 	while (time_stamp(phil) <= (tmp_time + phil->arg.time_to_eat))
 		usleep(200);
@@ -54,6 +54,10 @@ void	eat(t_phil *phil)
 		exit(FAILED);
 	if (sem_post(phil->forks) == -1)
 		exit(FAILED);
+	phil->times_eaten++;
+	if (phil->arg.times_each_philosopher_must_eat > 0 && \
+		phil->times_eaten >= phil->arg.times_each_philosopher_must_eat)
+		exit(DONE);
 	return ;
 }
 
